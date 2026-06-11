@@ -136,6 +136,7 @@ nav.s{background:rgba(251,246,238,.94);backdrop-filter:blur(10px);box-shadow:0 2
 .ff{flex-shrink:0;width:220px;background:var(--paper);border-radius:4px;overflow:hidden;border:2px solid rgba(255,255,255,.07);transition:transform .3s,border-color .3s;cursor:pointer}
 .ff.act{border-color:var(--rose-deep);transform:scale(1.04)}
 .ff .fi{height:150px;display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:.85rem;color:var(--ink-l);position:relative;overflow:hidden}
+.ff .fi.fi-img{background:var(--cream);padding:8px}
 .ff:nth-child(1) .fi{background:linear-gradient(135deg,#F7C5D0,#F9EEB8)}
 .ff:nth-child(2) .fi{background:linear-gradient(135deg,#C8DFC4,#D8D0EE)}
 .ff:nth-child(3) .fi{background:linear-gradient(135deg,#D8D0EE,#FDE8EF)}
@@ -319,4 +320,64 @@ footer{background:var(--ink);color:rgba(251,246,238,.5);text-align:center;paddin
   .sk-grid{grid-template-columns:1fr}.pj-grid{grid-template-columns:1fr}
   .vis-cards{grid-template-columns:1fr}.ct-card{padding:36px 24px}.fr2{grid-template-columns:1fr}
   .fs-track{padding:0 24px}
+}
+
+/* ====== GALLERY CAROUSEL ====== */
+#gallery{padding:100px 0;background:var(--cream);overflow:hidden;position:relative}
+#gallery .sh{padding:0 24px}
+
+.gal-wrap{width:100%;position:relative}
+
+.gal-track{
+  display:flex;
+  width:100%;
+  will-change:transform;
+}
+
+.gal-slide{
+  min-width:100%;
+  width:100%;
+  height:clamp(340px,55vw,640px);
+  flex-shrink:0;
+  position:relative;
+  overflow:hidden;
+}
+
+.gal-slide img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  background:var(--cream-d);
+  user-select:none;
+  pointer-events:none;
+}
+
+/* Dots */
+.gal-dots{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:28px;
+  padding-bottom:8px;
+}
+.gal-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--rose);
+  border:2px solid var(--rose-deep);
+  cursor:pointer;
+  transition:all .3s ease;
+  opacity:.5;
+}
+.gal-dot.on{
+  width:22px;
+  border-radius:99px;
+  background:var(--rose-deep);
+  opacity:1;
+}
+
+@media(max-width:960px){
+  .gal-slide{height:clamp(240px,75vw,480px)}
+  #gallery{padding:72px 0}
 }

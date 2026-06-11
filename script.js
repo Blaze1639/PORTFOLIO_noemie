@@ -132,3 +132,60 @@ document.addEventListener('mousemove', e => {
       : `rotate(${i % 2 === 0 ? -9 : 7}deg) translate(${dx * factor}px, ${dy * factor}px)`;
   });
 });
+
+// ====== GALLERY CAROUSEL ======
+(function() {
+  const track = document.getElementById('galTrack');
+  if (!track) return;
+  const slides = track.querySelectorAll('.gal-slide');
+  const dotsContainer = document.getElementById('galDots');
+  const total = slides.length;
+  let current = 0;
+  let autoplayTimer = null;
+  let isHovered = false;
+
+  // Build dots
+  const dots = [];
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'gal-dot' + (i === 0 ? ' on' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    d.addEventListener('click', () => { goTo(i); resetTimer(); });
+    dotsContainer.appendChild(d);
+    dots.push(d);
+  });
+
+  function goTo(idx) {
+    current = (idx + total) % total;
+    // CSS transition on track
+    track.style.transition = 'transform 1s cubic-bezier(0.76, 0, 0.24, 1)';
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    dots.forEach((d, i) => d.classList.toggle('on', i === current));
+  }
+
+  function next() { goTo(current + 1); }
+
+  function resetTimer() {
+    clearInterval(autoplayTimer);
+    if (!isHovered) startTimer();
+  }
+
+  function startTimer() {
+    autoplayTimer = setInterval(() => { if (!isHovered) next(); }, 3500);
+  }
+
+  // Pause on hover
+  const wrap = track.parentElement;
+  wrap.addEventListener('mouseenter', () => { isHovered = true; clearInterval(autoplayTimer); });
+  wrap.addEventListener('mouseleave', () => { isHovered = false; startTimer(); });
+
+  // Touch swipe
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) { goTo(current + (dx < 0 ? 1 : -1)); resetTimer(); }
+  });
+
+  startTimer();
+})();
